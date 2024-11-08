@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import PillowWriter
 from mpl_toolkits import mplot3d
 
-a = 0.5 # amplitude
+a = 0.2 # amplitude
 af = 0.3 # angular frequency (time)
 k = 0.5 # wave number (stretch)
 span = 10 # axes limits (graph)
@@ -16,11 +16,12 @@ def sin_wave(x, y, t) :
     return a * np.sin(k*x + k*y + af*t) 
 
 def gerstner_wave(x, y, t) : 
-    return a * np.exp(complex(0,1)*(k*x + k*y + af*t))  
+    return sum(a * np.exp(complex(0,1)*(k*x + k*y + n*af*t + n)).real for n in range(1,7))
+
 
 writer = PillowWriter(fps=10)
 
-xlist, ylist = np.meshgrid(np.linspace(min_span, max_span, 201), np.linspace(min_span, max_span, 201))
+xlist, ylist = np.meshgrid(np.linspace(min_span, max_span, 256), np.linspace(min_span, max_span, 256))
 zlist = []
 
 
