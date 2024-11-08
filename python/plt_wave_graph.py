@@ -3,20 +3,24 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import PillowWriter
 from mpl_toolkits import mplot3d
 
-span = 4
+af = 0.3 # angular frequency (time)
+k = 0.8 # wave number (stretch)
+span = 4 # axes limits (graph)
 min_span, max_span  = -span, span
 
 fig = plt.figure()
 ax = fig.add_subplot(projection="3d")
 
 def sinus(x, y, t) :
-    return np.sin(x + t) * np.sin(y + t)
+    return np.sin(k*x + k*y + af*t) 
+
+def wave2(x, y, t) :
+    return np.sin(k*x + k*y + af*t) * np.sin(k*x + af*t) * np.sin(k*y + af*t) 
 
 writer = PillowWriter(fps=10)
 
 xlist, ylist = np.meshgrid(np.linspace(min_span, max_span, 201), np.linspace(min_span, max_span, 201))
 zlist = []
-
 
 
 with writer.saving(fig, ".\python\sin_wave.gif", 200) :
@@ -27,8 +31,8 @@ with writer.saving(fig, ".\python\sin_wave.gif", 200) :
 
         ax.set(xlim=(min_span, max_span), ylim = (min_span, max_span), zlim=(-5, 5), xlabel="x", ylabel="y", zlabel="z")
 
-        #ax.scatter(xlist, ylist, zlist)
-        ax.plot_surface(xlist, ylist, zlist, cmap="Blues_r")
+        #ax.plot_surface(xlist, ylist, zlist, cmap="Blues_r")
+        ax.plot_surface(xlist, ylist, zlist)
 
         writer.grab_frame()
 
